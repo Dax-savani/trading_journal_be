@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/dbConfig');
+const sequelize = require('../config/dbConfigSequelize');
 
 const StockTrade = sequelize.define('StockTrade', {
     stock_name: {
@@ -49,6 +49,14 @@ const StockTrade = sequelize.define('StockTrade', {
     profit_or_loss: {
         type: DataTypes.ENUM('PROFIT', 'LOSS'),
         allowNull: true,
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'users',
+            key: 'id',
+        },
     },
 }, {
     tableName: 'stock_trades',

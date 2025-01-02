@@ -1,18 +1,17 @@
 const express = require('express');
 const stockRouter = express.Router();
 const StockTrade = require('../models/stockTrade');
+const { handleError } = require("../helpers/handleError");
+const { auth } = require('../middleware/auth');
 
-const handleError = (error, res) => {
-    console.error(error);
-    res.status(500).json({
-        message: 'An error occurred',
-        error: error.message,
-    });
-};
+
+stockRouter.use(auth);
+
 
 stockRouter.post('/', async (req, res) => {
     try {
-        const { stock_name, date_and_time, qty, side, entry_price, stop_loss, target, exit_price, learning_from_trade, mistake, rate , profit_or_loss} = req.body;
+        const { stock_name, date_and_time, qty, side, entry_price, stop_loss, target, exit_price, learning_from_trade, mistake, rate, profit_or_loss } = req.body;
+        const user_id = req.user.id;
 
         const newStockTrade = await StockTrade.create({
             stock_name,
@@ -27,6 +26,7 @@ stockRouter.post('/', async (req, res) => {
             mistake,
             rate,
             profit_or_loss,
+            user_id,
         });
 
         return res.status(201).json({
@@ -38,6 +38,7 @@ stockRouter.post('/', async (req, res) => {
     }
 });
 
+
 stockRouter.get('/', async (req, res) => {
     try {
         const stockTrades = await StockTrade.findAll();
@@ -46,6 +47,7 @@ stockRouter.get('/', async (req, res) => {
         handleError(error, res);
     }
 });
+
 
 stockRouter.get('/:id', async (req, res) => {
     const { id } = req.params;
@@ -62,6 +64,7 @@ stockRouter.get('/:id', async (req, res) => {
     }
 });
 
+
 stockRouter.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { stock_name, date_and_time, qty, side, entry_price, stop_loss, target, exit_price, learning_from_trade, mistake, rate, profit_or_loss } = req.body;
@@ -73,6 +76,9 @@ stockRouter.put('/:id', async (req, res) => {
                 message: `Stock trade with ID ${id} not found`,
             });
         }
+
+
+        const user_id = req.user.id;
 
         await stockTrade.update({
             stock_name,
@@ -86,7 +92,8 @@ stockRouter.put('/:id', async (req, res) => {
             learning_from_trade,
             mistake,
             rate,
-            profit_or_loss
+            profit_or_loss,
+            user_id,
         });
 
         return res.status(200).json({
@@ -97,6 +104,7 @@ stockRouter.put('/:id', async (req, res) => {
         handleError(error, res);
     }
 });
+
 
 stockRouter.delete('/:id', async (req, res) => {
     const { id } = req.params;
