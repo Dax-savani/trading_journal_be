@@ -14,10 +14,14 @@ const Playbook = sequelize.define('Playbook', {
         type: DataTypes.TEXT,
         allowNull: true,
     },
-    // notes: {
-    //     type: DataTypes.JSON,
-    //     allowNull: true,
-    // },
+    notes: {
+        type: DataTypes.JSON,
+        allowNull: true,
+    },
+    criteria: {
+        type: DataTypes.JSON,
+        allowNull: true,
+    },
     user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
