@@ -11,6 +11,12 @@ async function auth(req, res, next) {
             });
         }
         const user = await verifyToken(authToken);
+        if (!user) {
+            return res.status(401).json({
+                message: "User not found!",
+                status: 401
+            });
+        }
         const verifiedUser = await User.findByPk(user.id);
         if (!verifiedUser) {
             return res.status(401).json({

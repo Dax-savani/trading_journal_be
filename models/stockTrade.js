@@ -58,6 +58,14 @@ const StockTrade = sequelize.define('StockTrade', {
             key: 'id',
         },
     },
+    playbook_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'playbooks',
+            key: 'id',
+        },
+    },
 }, {
     tableName: 'stock_trades',
     timestamps: true,

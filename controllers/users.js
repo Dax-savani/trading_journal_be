@@ -2,7 +2,7 @@ const express = require('express');
 const userRouter = express.Router();
 const User = require('../models/users');
 const bcrypt = require('bcrypt');
-const {handleError} = require("../helpers/handleError");
+const handleError = require("../helpers/handleError");
 const {generateToken} = require("../auth/jwt");
 
 

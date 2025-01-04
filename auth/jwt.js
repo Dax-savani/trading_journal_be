@@ -5,6 +5,10 @@ const generateToken = (id) => {
 }
 
 const verifyToken = (token) => {
-    return jwt.verify(token, process.env.JWT_SECRET_KEY)
+    try {
+        return jwt.verify(token, process.env.JWT_SECRET_KEY);
+    } catch (error) {
+        return undefined;
+    }
 }
 module.exports = {generateToken, verifyToken}
